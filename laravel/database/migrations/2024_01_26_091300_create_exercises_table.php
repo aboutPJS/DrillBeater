@@ -19,9 +19,8 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->integer('reps_min');
             $table->integer('reps_max');
-            $table->integer('set_min');
-            $table->integer('set_max');
-            $table->foreignIdFor(Workout::class)->nullable();
+            $table->integer('sets_min');
+            $table->integer('sets_max');
             $table->foreignIdFor(User::class);
         });
     }

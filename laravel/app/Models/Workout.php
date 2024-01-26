@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Workout extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
 
@@ -18,9 +19,9 @@ class Workout extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function exercises(): HasMany
+    public function exercises(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Exercise::class);
+        return $this->belongsToMany(Exercise::class, 'exercise_workout', 'workout_id', 'exercise_id');
     }
 
     public function trainings(): HasMany

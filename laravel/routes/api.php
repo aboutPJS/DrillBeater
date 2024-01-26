@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Http\Request;
@@ -24,7 +25,11 @@ Route::post('/login/verify', [LoginController::class, 'verify']);
 //create workout
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/workout', [WorkoutController::class, 'create']);
+    Route::post('/workout/{workout}/exercise/{exercise}', [WorkoutController::class, 'add']);
     Route::get('/workout', [WorkoutController::class, 'show']);
+
+    Route::post('/exercise', [ExerciseController::class, 'create']);
+    Route::get('/exercise', [ExerciseController::class, 'show']);
 
     //get workouts
 

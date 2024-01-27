@@ -11,7 +11,9 @@ class WorkoutController extends Controller
 {
     public function show(Request $request)
     {
-        return $request->user()->workouts;
+        $workouts = $request->user()->workouts;
+        $workouts->load('exercises');
+        return $workouts;
     }
 
     public function create(Request $request)
@@ -29,17 +31,22 @@ class WorkoutController extends Controller
 
     public function add(Request $request, Workout $workout, Exercise $exercise)
     {
+        $exercises = $workout->exercises();
+        $isFromUser = $exercise->user->id === $request->user()->id;
+        $isNotInList = !$exercises->get()->contains($exercise);
 
-        Log::info($workout);
-        Log::info($exercise);
-        Log::info($exercise->id);
+        if ($isNotInList && $isFromUser) {
+            $exercises->attach($exercise->id);
+        }
 
-
-        $workout->exercises()->attach($exercise->id);
-
-
+        $workout->load('exercises');
         return $workout;
     }
 
-
+    public function remove(Request $request, Workout $workout, Exercise $exercise)
+    {
+        $workout->exercises()->detach($exercise->id);
+        $workout->load('exercises');
+        return $workout;
+    }
 }

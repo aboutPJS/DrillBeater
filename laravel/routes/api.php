@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ExecutionController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,20 +26,21 @@ Route::post('/login/verify', [LoginController::class, 'verify']);
 
 //create workout
 Route::group(['middleware' => 'auth:sanctum'], function () {
+
     Route::post('/workout', [WorkoutController::class, 'create']);
     Route::post('/workout/{workout}/exercise/{exercise}', [WorkoutController::class, 'add']);
+    Route::delete('/workout/{workout}/exercise/{exercise}', [WorkoutController::class, 'remove']);
     Route::get('/workout', [WorkoutController::class, 'show']);
 
     Route::post('/exercise', [ExerciseController::class, 'create']);
     Route::get('/exercise', [ExerciseController::class, 'show']);
 
-    //get workouts
+    Route::get('/training', [TrainingController::class, 'show']);
+    Route::post('/training/workout/{workout}/', [TrainingController::class, 'start']);
+    Route::post('/training/{training}', [TrainingController::class, 'complete']);
 
-//create exercise
+    Route::post('/training/{training}/execution/{execution}', [ExecutionController::class, 'update']);
 
-//create execution
-
-//create Training
 
     Route::get('/user', function (Request $request) {
         return $request->user();

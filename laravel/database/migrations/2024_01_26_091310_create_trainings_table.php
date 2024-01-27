@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(Workout::class);
             $table->foreignIdFor(User::class);
+            $table->boolean('is_completed')->default(false);
         });
     }
 

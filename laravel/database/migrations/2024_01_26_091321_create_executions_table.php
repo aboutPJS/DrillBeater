@@ -20,8 +20,9 @@ return new class extends Migration {
             $table->foreignIdFor(Training::class);
             $table->foreignIdFor(User::class);
             $table->string('notes')->nullable();
-            $table->integer('reps');
-            $table->integer('sets');
+            $table->integer('reps')->nullable();
+            $table->integer('sets')->nullable();
+            $table->boolean('is_completed')->default(false);
         });
     }
 

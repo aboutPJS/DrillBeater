@@ -28,9 +28,12 @@ class LoginController extends Controller
 
         Log::info("submit");
 
-        $user->notify(new LoginNeedsVerification("name"));
+        $loginCode = rand(111111, 999999);
 
-        return response()->json(['message' => 'Text message was sent']);
+        $user->notify(new LoginNeedsVerification($loginCode));
+
+
+        return response()->json(['message' => "Text message was sent {$loginCode}"]);
     }
 
 

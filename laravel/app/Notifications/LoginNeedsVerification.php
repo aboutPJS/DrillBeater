@@ -11,16 +11,21 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Twilio\TwilioChannel;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
+use Ramsey\Uuid\Type\Integer;
 
 class LoginNeedsVerification extends Notification
 {
     use Queueable;
 
+    protected $code;
+
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(int $code)
     {
+       $this->code = $code;
     }
 
     /**
@@ -40,14 +45,13 @@ class LoginNeedsVerification extends Notification
      */
     public function toVonage(object $notifiable): VonageMessage
     {
-        $loginCode = rand(111111, 999999);
 
         $notifiable->update(
-            ['login_code' => $loginCode]
+            ['login_code' => $this->code]
         );
 
         return (new VonageMessage())
-            ->content("Your Puber login code is {$loginCode}, do not share this!")
+            ->content("Your DrillBeater login code is {$this->code}, do not share this!")
             ->unicode();
     }
 

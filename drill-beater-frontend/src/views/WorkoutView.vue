@@ -24,8 +24,6 @@ const navigate = (id: string) => {
       }
   )
 }
-const handleCreatWorkout = () => {
-}
 
 </script>
 

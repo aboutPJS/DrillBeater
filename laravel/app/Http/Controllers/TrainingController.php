@@ -6,13 +6,24 @@ use App\Models\Execution;
 use App\Models\Training;
 use App\Models\Workout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TrainingController extends Controller
 {
     public function show(Request $request)
     {
-        $training = $request->user()->trainings;
+        $trainings = $request->user()->trainings;
+        $trainings->load('executions');
+        $trainings->load('workout');
+
+        return $trainings;
+    }
+
+    public function showSingle(Request $request, Training $training)
+    {
         $training->load('executions');
+        $training->load('workout');
+        $training->workout->load('exercises');
         return $training;
     }
 

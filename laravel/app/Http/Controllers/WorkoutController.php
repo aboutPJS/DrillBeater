@@ -16,6 +16,19 @@ class WorkoutController extends Controller
         return $workouts;
     }
 
+    public function showSingle(Request $request, Workout $workout)
+    {
+
+        Log::info($request->user()->id);
+        Log::info($workout->user->id);
+        if ($request->user()->id !== $workout->user->id) {
+            return response()->json(['message' => 'Not your workout', 404]);
+        }
+        $workout->load('exercises');
+
+        return $workout;
+    }
+
     public function create(Request $request)
     {
         $request->validate([

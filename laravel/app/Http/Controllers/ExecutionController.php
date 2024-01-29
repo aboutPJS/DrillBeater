@@ -14,12 +14,14 @@ class ExecutionController extends Controller
         $request->validate([
             'reps' => 'required|numeric',
             'sets' => 'required|numeric',
+            'weight' => 'required|numeric',
             'is_completed' => 'required|boolean',
         ]);
 
         $execution->update([
             'reps' => $request->get('reps'),
             'sets' => $request->get('sets'),
+            'weight' => $request->get('weight'),
             'is_completed' => $request->get('is_completed'),
             'notes' => $request->get('notes'),
         ]);

@@ -31,15 +31,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/workout/{workout}/exercise/{exercise}', [WorkoutController::class, 'add']);
     Route::delete('/workout/{workout}/exercise/{exercise}', [WorkoutController::class, 'remove']);
     Route::get('/workout', [WorkoutController::class, 'show']);
+    Route::get('/workout/{workout}', [WorkoutController::class, 'showSingle']);
 
     Route::post('/exercise', [ExerciseController::class, 'create']);
     Route::get('/exercise', [ExerciseController::class, 'show']);
 
     Route::get('/training', [TrainingController::class, 'show']);
     Route::post('/training/workout/{workout}/', [TrainingController::class, 'start']);
-    Route::post('/training/{training}', [TrainingController::class, 'complete']);
+    Route::put('/training/{training}', [TrainingController::class, 'complete']);
+    Route::get('/training/{training}', [TrainingController::class, 'showSingle']);
 
-    Route::post('/training/{training}/execution/{execution}', [ExecutionController::class, 'update']);
+    Route::put('/training/{training}/execution/{execution}', [ExecutionController::class, 'update']);
 
 
     Route::get('/user', function (Request $request) {

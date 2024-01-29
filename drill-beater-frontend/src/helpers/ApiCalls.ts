@@ -50,6 +50,43 @@ export const removeExercise = async (data: { workoutId: number, exerciseId: numb
     return response.data;
 };
 
+export const getTrainings = async () => {
+    const response = await http().get(`api/training`);
+    return response.data;
+};
+
+export const getTraining = async (id) => {
+    const response = await http().get(`api/training/${id}/`);
+    return response.data;
+};
+
+
+export const createTraining = async (id) => {
+    const response = await http().post(`api/training/workout/${id}/`);
+    return response.data;
+};
+
+export const completeTraining = async (id) => {
+    const response = await http().put(`api/training/${id}/`);
+    return response.data;
+};
+
+export const updateExecution =
+    async (
+        data: {
+            trainingId: number,
+            executionId: number,
+            executionData: {
+                reps: number,
+                sets: number,
+                notes: string | null,
+                weight: number,
+                is_completed: boolean
+            }
+        }) => {
+        const response = await http().put(`api/training/${data.trainingId}/execution/${data.executionId}/`, data.executionData);
+        return response.data;
+    };
 export const createExercise = async (data: {
     name: string,
     description: string | null,

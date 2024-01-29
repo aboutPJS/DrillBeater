@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('notes')->nullable();
             $table->integer('reps')->nullable();
             $table->integer('sets')->nullable();
+            $table->integer('weight')->nullable();
             $table->boolean('is_completed')->default(false);
         });
     }

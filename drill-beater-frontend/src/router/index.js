@@ -5,6 +5,9 @@ import LoginView from "@/views/LoginView.vue";
 import http from "@/helpers/http.js";
 import WorkoutDetailsView from "@/views/WorkoutDetailsView.vue";
 import ExerciseListView from "@/views/ExerciseListView.vue";
+import TrainingView from "@/views/TrainingView.vue";
+import TrainingDetailsView from "@/views/TrainingDetailsView.vue";
+import HistoryView from "@/views/HistoryView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +36,21 @@ const router = createRouter({
             path: '/workout/:id/exercises',
             name: 'exercises',
             component: ExerciseListView,
+        },
+        {
+            path: '/training',
+            name: 'training',
+            component: TrainingView,
+        },
+        {
+            path: '/training/:id',
+            name: 'trainingDetails',
+            component: TrainingDetailsView,
+        },
+        {
+            path: '/history',
+            name: 'history',
+            component: HistoryView,
         },
     ]
 })

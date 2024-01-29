@@ -18,9 +18,10 @@ const handleWorkouts = () => {
 
 const handleTrainingHistory = () => {
   router.push({
-    name: 'training'
+    name: 'history'
   })
 }
+
 
 </script>
 

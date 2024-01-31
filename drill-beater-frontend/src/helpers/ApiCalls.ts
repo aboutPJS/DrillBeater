@@ -1,15 +1,20 @@
 import http from "@/helpers/http.js";
 
-export const loginCall = async (phoneNumber: number) => {
-    const response = await http().post('/api/login', {phone: phoneNumber});
+export const loginCall = async (user: {
+    name: String,
+    email: String,
+    password: String,
+}) => {
+    console.log(user)
+    const response = await http().post('/api/login', user);
     return response.data;
 };
 
-export const verifyCall = async (credentials: { phoneNumber: number, loginCode: number }) => {
-    const response = await http().post('/api/login/verify', {
-        phone: credentials.phoneNumber,
-        login_code: credentials.loginCode
-    });
+export const verifyCall = async (userLogin: {
+    email: String,
+    password: String,
+}) => {
+    const response = await http().post('/api/login/verify', userLogin);
     return response.data;
 };
 
@@ -101,5 +106,6 @@ export const createExercise = async (data: {
 
 
 export const errorHandling = (error) => {
+    alert(error.response.data.message)
     console.log(error)
 }

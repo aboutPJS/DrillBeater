@@ -20,8 +20,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login', [LoginController::class, 'submit']);
-Route::post('/login/verify', [LoginController::class, 'verify']);
+//Route::post('/login', [LoginController::class, 'submit']);
+//Route::post('/login/verify', [LoginController::class, 'verify']);
+
+Route::post('/login', [LoginController::class, 'createUser']);
+Route::post('/login/verify', [LoginController::class, 'verifyUser']);
 
 
 //create workout
@@ -42,7 +45,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/training/{training}', [TrainingController::class, 'showSingle']);
 
     Route::put('/training/{training}/execution/{execution}', [ExecutionController::class, 'update']);
-
 
     Route::get('/user', function (Request $request) {
         return $request->user();

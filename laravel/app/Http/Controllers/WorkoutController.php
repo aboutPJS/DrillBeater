@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Exercise;
 use App\Models\Workout;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class WorkoutController extends Controller
 {
@@ -16,33 +16,40 @@ class WorkoutController extends Controller
         return $workouts;
     }
 
-    public function showSingle(Request $request, Workout $workout)
+    public function showSingle(Request $request, Workout $workout): Workout|JsonResponse
     {
-
-        Log::info($request->user()->id);
-        Log::info($workout->user->id);
         if ($request->user()->id !== $workout->user->id) {
-            return response()->json(['message' => 'Not your workout', 404]);
+            return response()->json(['message' => 'Not your workout'], 401);
         }
+
         $workout->load('exercises');
 
         return $workout;
     }
 
-    public function create(Request $request)
+    public function create(Request $request): Workout|JsonResponse
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:8',
         ]);
+
+        $nameTaken = Workout::where('user_id', $request->user()->id)
+            ->where('name', $request->name)
+            ->exists();
+
+        if ($nameTaken) {
+            return response()->json(['message' => 'Choose a different name'], 401);
+        }
 
         $workout = $request->user()->workouts()->create($request->only([
             'name',
+            'description'
         ]));
 
         return $workout;
     }
 
-    public function add(Request $request, Workout $workout, Exercise $exercise)
+    public function add(Request $request, Workout $workout, Exercise $exercise): Workout
     {
         $exercises = $workout->exercises();
         $isFromUser = $exercise->user->id === $request->user()->id;
@@ -56,9 +63,13 @@ class WorkoutController extends Controller
         return $workout;
     }
 
-    public function remove(Request $request, Workout $workout, Exercise $exercise)
+    public function remove(Request $request, Workout $workout, Exercise $exercise): Workout
     {
-        $workout->exercises()->detach($exercise->id);
+        $isFromUser = $exercise->user->id === $request->user()->id;
+        if ($isFromUser) {
+            $workout->exercises()->detach($exercise->id);
+        }
+
         $workout->load('exercises');
         return $workout;
     }

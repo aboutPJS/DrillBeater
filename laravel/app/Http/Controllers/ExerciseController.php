@@ -23,6 +23,22 @@ class ExerciseController extends Controller
             'sets_max' => 'required|numeric',
         ]);
 
+        if ($request->reps_min < 1 || $request->reps_min > $request->reps_max) {
+            return response()->json(['error' => 'The minimum of Reps must be between 1 and the maximum'], 400);
+        }
+
+        if ($request->reps_max > 50) {
+            return response()->json(['error' => 'The maximum of Reps must be below 50 and above the minimum'], 400);
+        }
+
+        if ($request->sets_min < 1 || $request->sets_min > $request->sets_max) {
+            return response()->json(['error' => 'The maximum of Sets must be below 50 and above the minimum'], 400);
+        }
+
+        if ($request->sets_max > 50) {
+            return response()->json(['error' => 'The maximum of Sets must be below 50 and above the minimum'], 400);
+        }
+
         $exercise = new Exercise();
 
         $exercise->name = $request->get('name');

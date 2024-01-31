@@ -21,6 +21,10 @@ class TrainingController extends Controller
 
     public function showSingle(Request $request, Training $training)
     {
+        if (!$this->isFromUser($request, $training)) {
+            return response()->json(['message' => 'Training not found'], 404);
+        }
+
         $training->load('executions');
         $training->load('workout');
         $training->workout->load('exercises');
@@ -52,10 +56,20 @@ class TrainingController extends Controller
 
     public function complete(Request $request, Workout $workout, Training $training)
     {
+        if (!$this->isFromUser($request, $training)) {
+            return response()->json(['message' => 'Training not found'], 404);
+        }
+
         $training->update([
             'is_completed' => true
         ]);
         $training->load('executions');
         return $training;
+    }
+
+
+    private function isFromUser(Request $request, Training $training)
+    {
+        return $training->user->id === $request->user()->id;
     }
 }
